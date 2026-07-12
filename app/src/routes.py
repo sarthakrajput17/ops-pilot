@@ -35,15 +35,36 @@ def register_routes(app):
 
         data = request.get_json()
 
-        name = data["name"]
-        email = data["email"]
+        if data is None:
+            return jsonify({
+                "message": "Request body is required"
+            }), 400
 
-        user_id = create_user(name, email)
+        name = data.get("name")
+        email = data.get("email")
 
-        return jsonify({
-            "message": "User created successfully",
-            "id": user_id
-        }), 201
+        if not name:
+            return jsonify({
+                "message": "Name is required"
+            }), 400
+
+        if not email:
+            return jsonify({
+                "message": "Email is required"
+            }), 400
+
+        try:
+           user_id = create_user(name, email)
+
+           return jsonify({
+              "message": "User created successfully",
+              "id": user_id
+            }), 201
+
+        except ValueError as e:
+            return jsonify({
+               "message": str(e)
+            }), 409
     
     @app.route("/users", methods=["GET"])
     def get_users():

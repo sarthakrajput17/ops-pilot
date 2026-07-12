@@ -1,4 +1,5 @@
 import psycopg2
+from psycopg2 import errors
 from config import Config
 
 def get_db_connection():
@@ -15,18 +16,27 @@ def create_user(name, email):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute(
-        """
-        INSERT INTO users (name, email)
-        VALUES (%s, %s)
-        RETURNING id;
-        """,
-        (name, email)
-    )
+    try:
+            cursor.execute(
+            """
+            INSERT INTO users (name, email)
+            VALUES (%s, %s)
+            RETURNING id;
+            """,
+            (name, email)
+            ) 
 
-    user_id = cursor.fetchone()[0]
+            user_id = cursor.fetchone()[0]
 
-    conn.commit()
+            conn.commit()
+
+    except errors.UniqueViolation:
+            conn.rollback()
+
+            cursor.close()
+            conn.close()
+
+            raise ValueError("Email already exists")
 
     cursor.close()
     conn.close()
