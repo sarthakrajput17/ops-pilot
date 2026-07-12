@@ -241,7 +241,6 @@ python main.py
 
 # Upcoming
 
-- Input Validation
 - Exception Handling
 - Unit Testing
 - Dockerize Flask
