@@ -83,3 +83,17 @@ def register_routes(app):
         return jsonify({
             "message": "User updated successfully"
         }), 200
+    
+    @app.route("/users/<int:user_id>", methods=["DELETE"])
+    def remove_user(user_id):
+
+        deleted_rows = delete_user(user_id)
+
+        if deleted_rows == 0:
+             return jsonify({
+                 "message": "User not found"
+            }), 404
+
+        return jsonify({
+            "message": "User deleted successfully"
+        }), 200
