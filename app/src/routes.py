@@ -3,7 +3,9 @@ from db import (
     get_db_connection,
     create_user,
     get_all_users,
-    get_user_by_id
+    get_user_by_id,
+    update_user,
+    delete_user
 )
 
 
@@ -62,3 +64,22 @@ def register_routes(app):
             }), 404
 
         return jsonify(user), 200
+    
+    @app.route("/users/<int:user_id>", methods=["PUT"])
+    def update_existing_user(user_id):
+
+        data = request.get_json()
+
+        name = data["name"]
+        email = data["email"]
+
+        updated_rows = update_user(user_id, name, email)
+
+        if updated_rows == 0:
+            return jsonify({
+            "message": "User not found"
+            }), 404
+
+        return jsonify({
+            "message": "User updated successfully"
+        }), 200

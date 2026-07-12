@@ -87,3 +87,47 @@ def get_user_by_id(user_id):
         "email": row[2],
         "created_at": str(row[3])
     }
+
+def update_user(user_id, name, email):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        UPDATE users
+        SET name = %s,
+            email = %s
+        WHERE id = %s;
+        """,
+        (name, email, user_id)
+    )
+
+    updated_rows = cursor.rowcount
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return updated_rows
+
+def delete_user(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        DELETE FROM users
+        WHERE id = %s;
+        """,
+        (user_id,)
+    )
+
+    deleted_rows = cursor.rowcount
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return deleted_rows
