@@ -227,11 +227,13 @@ python main.py
 
 ---
 
-# Current Progress
+## Current Progress
 
 - Flask Backend
 - PostgreSQL Integration
 - Full CRUD APIs
+- Input Validation
+- Duplicate Email Handling
 - Dockerized PostgreSQL
 - Git Version Control
 
