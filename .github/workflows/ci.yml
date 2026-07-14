@@ -30,7 +30,7 @@
       runs-on: ubuntu-latest
 
       env:
-          DB_HOST: loalhost
+          DB_HOST: localhost
           DB_PORT: 5432
           DB_NAME: devopsdb
           DB_USER: postgres
@@ -69,13 +69,6 @@
                 -U postgres \
                 -d devopsdb \
                 -f database/init.sql
-
-          - name: Wait for PostgreSQL
-            run: |
-              until PGPASSWORD=postgres psql -h postgres -U postgres -d devopsdb -c '\q'; do
-                echo "Waiting for PostgreSQL..."
-                sleep 2
-              done
 
           - name: Run Tests
             run: |
