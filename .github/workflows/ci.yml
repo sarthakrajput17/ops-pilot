@@ -30,7 +30,7 @@
       runs-on: ubuntu-latest
 
       env:
-          DB_HOST: postgres
+          DB_HOST: loalhost
           DB_PORT: 5432
           DB_NAME: devopsdb
           DB_USER: postgres
@@ -54,10 +54,18 @@
               python -m pip install --upgrade pip
               pip install -r app/requirements.txt    
 
+          - name: Wait for PostgreSQL
+            run: |
+              until pg_isready -h localhost -p 5432 -U postgres
+              do
+                echo "Waiting for PostgreSQL..."
+                sleep 2
+              done
+
           - name: Initialize Database
             run: |
               PGPASSWORD=postgres psql \
-                -h postgres \
+                -h localhost \
                 -U postgres \
                 -d devopsdb \
                 -f database/init.sql
