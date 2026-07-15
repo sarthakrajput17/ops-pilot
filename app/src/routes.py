@@ -1,4 +1,5 @@
 from flask import request, jsonify
+from logger import logger
 from db import (
     get_db_connection,
     create_user,
@@ -18,12 +19,15 @@ def register_routes(app):
             conn = get_db_connection()
             conn.close()
 
+            logger.info("GET /health - Database connection successful")
+
             return jsonify({
                 "status": "ok",
                 "database": "connected"
             })
 
         except Exception as e:
+            logger.error(f"GET /health - Database connection failed: {str(e)}")
             return jsonify({
                 "status": "error",
                 "message": str(e)

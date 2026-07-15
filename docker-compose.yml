@@ -1,12 +1,8 @@
-version: "3.9"
-
 services:
 
   postgres:
     image: postgres:16
-
     container_name: postgres-db
-
     restart: always
 
     env_file:
@@ -25,7 +21,6 @@ services:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   flask-app:
-
     build:
       context: ./app
       dockerfile: Dockerfile
@@ -41,5 +36,84 @@ services:
     ports:
       - "5001:5001"
 
+  loki:
+    image: grafana/loki:2.9.8
+
+    container_name: loki
+
+    ports:
+      - "3100:3100"
+
+    command: -config.file=/etc/loki/config.yml
+
+    volumes:
+      - ./monitoring/loki/config.yml:/etc/loki/config.yml
+
+  promtail:
+    image: grafana/promtail:3.0.0
+
+    container_name: promtail
+
+    command: -config.file=/etc/promtail/config.yml
+
+    volumes:
+      - ./monitoring/promtail/config.yml:/etc/promtail/config.yml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    depends_on:
+      - loki
+
+  grafana:
+    image: grafana/grafana:11.0.0
+
+    container_name: grafana
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+    depends_on:
+      - loki
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: cadvisor
+    restart: unless-stopped
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+
+    privileged: true
+
+    devices:
+      - /dev/kmsg 
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+
+    ports:
+      - "9090:9090"
+
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+
+    depends_on:
+      - cadvisor
+
 volumes:
   postgres-data:
+  grafana-data:

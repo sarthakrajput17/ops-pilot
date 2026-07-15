@@ -1,16 +1,25 @@
 import psycopg2
 from psycopg2 import errors
 from config import Config
+from logger import logger
 
 def get_db_connection():
-    conn = psycopg2.connect(
-        host=Config.DB_HOST,
-        port=Config.DB_PORT,
-        dbname=Config.DB_NAME,
-        user=Config.DB_USER,
-        password=Config.DB_PASSWORD
-    )
-    return conn
+    try:
+        conn = psycopg2.connect(
+            host=Config.DB_HOST,
+            port=Config.DB_PORT,
+            dbname=Config.DB_NAME,
+            user=Config.DB_USER,
+            password=Config.DB_PASSWORD
+        )
+
+        logger.info("Connected to PostgreSQL")
+
+        return conn
+
+    except Exception as e:
+        logger.error(f"Failed to connect to PostgreSQL: {e}")
+        raise
 
 def create_user(name, email):
     conn = get_db_connection()
