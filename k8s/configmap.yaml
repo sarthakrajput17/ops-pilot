@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: ops-pilot-config
+  namespace: ops-pilot
+
+  labels:
+    app: ops-pilot
+    component: configuration
+
+data:
+  APP_PORT: "5001"
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_NAME: "devopsdb"

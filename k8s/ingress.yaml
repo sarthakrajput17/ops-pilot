@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: ops-pilot-ingress
+  namespace: ops-pilot
+
+  labels:
+    app: ops-pilot
+    component: ingress
+
+spec:
+  ingressClassName: nginx
+
+  rules:
+    - host: ops-pilot.local
+
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+
+            backend:
+              service:
+                name: ops-pilot-service
+
+                port:
+                  number: 5001

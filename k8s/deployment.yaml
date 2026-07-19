@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: ops-pilot
+  namespace: ops-pilot
+  labels:
+    app: ops-pilot
+    component: backend
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: ops-pilot
+      component: backend
+
+  template:
+    metadata:
+      labels:
+        app: ops-pilot
+        component: backend
+
+    spec:
+      containers:
+        - name: ops-pilot
+
+          image: sarthakrajput17/ops-pilot:latest
+          imagePullPolicy: Always
+
+          # CPU requests are required for HPA to calculate CPU utilization.
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+          ports:
+            - containerPort: 5001
+
+          env:
+            - name: APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ops-pilot-config
+                  key: APP_PORT
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: ops-pilot-config
+                  key: DB_HOST
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ops-pilot-config
+                  key: DB_PORT
+
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ops-pilot-config
+                  key: DB_NAME
+
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ops-pilot-secret
+                  key: DB_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ops-pilot-secret
+                  key: DB_PASSWORD
+
+          # Restarts the container if the application becomes unhealthy.
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5001
+
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          # Sends traffic to the Pod only after the application is ready.
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5001
+
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
