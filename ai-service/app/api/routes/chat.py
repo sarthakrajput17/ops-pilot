@@ -11,6 +11,9 @@ orchestrator = AIOrchestrator()
 @router.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
 
-    response = orchestrator.process(request.message)
+    response = orchestrator.process(
+        request.message,
+        request.context
+    )
 
     return ChatResponse(response=response)

@@ -1,5 +1,21 @@
+from app.services.kubernetes_service import KubernetesService
+
+
 class KubernetesSkill:
 
-    def execute(self, message: str):
+    def __init__(self):
+        self.service = KubernetesService()
 
-        return "Kubernetes Skill coming soon."
+    def execute(
+        self,
+        message: str,
+        context: str | None = None,
+    ):
+
+        if not context:
+            return "Please provide a Kubernetes manifest."
+
+        return self.service.analyze(
+            question=message,
+            manifest=context,
+        )

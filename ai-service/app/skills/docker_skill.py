@@ -1,5 +1,8 @@
 class DockerSkill:
 
-    def execute(self, message: str):
-
-        return "Docker Skill coming soon."
+    def execute(
+        self,
+        message: str,
+        context: str | None = None,
+    ):
+        return "Docker skill is under development."

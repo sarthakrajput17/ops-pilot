@@ -7,6 +7,9 @@ class GeneralSkill:
 
         self.provider = LLMFactory.create()
 
-    def execute(self, message: str):
-
+    def execute(
+        self,
+        message: str,
+        context: str | None = None
+    ):
         return self.provider.generate(message)

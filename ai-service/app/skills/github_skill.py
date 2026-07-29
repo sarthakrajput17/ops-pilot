@@ -1,5 +1,8 @@
 class GithubSkill:
 
-    def execute(self, message: str):
-
-        return "Githsub Skill coming soon."
+    def execute(
+        self,
+        message: str,
+        context: str | None = None,
+    ):
+        return "GitHub skill is under development."

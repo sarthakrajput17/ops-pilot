@@ -2,13 +2,15 @@ from abc import ABC, abstractmethod
 
 
 class LLMProvider(ABC):
-    """
-    Abstract base class for all LLM providers.
-    """
 
     @abstractmethod
     def generate(self, prompt: str) -> str:
-        """
-        Generate a response from the LLM.
-        """
+        pass
+
+    @abstractmethod
+    def generate_structured(
+        self,
+        prompt: str,
+        response_schema,
+    ):
         pass

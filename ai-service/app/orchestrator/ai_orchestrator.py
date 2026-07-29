@@ -10,12 +10,17 @@ class AIOrchestrator:
 
         self.registry = SkillRegistry()
 
-    def process(self, message: str):
+    def process(
+        self,
+        message: str,
+        context: str | None = None
+    ):
 
         skill_type = self.router.route(message)
 
         skill = self.registry.get(skill_type)
 
-        response = skill.execute(message)
-
-        return response
+        return skill.execute(
+            message,
+            context
+        )
