@@ -27,13 +27,21 @@ class GeminiProvider(LLMProvider):
         response_schema,
     ):
 
-        response = self.client.models.generate_content(
-            model=settings.LLM_MODEL,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-                response_schema=response_schema,
-            ),
-        )
+        try:
+            response = self.client.models.generate_content(
+                model=settings.LLM_MODEL,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=response_schema,
+                ),
+            )
 
-        return response.parsed
+            return response.parsed
+
+        except Exception as e:
+            print("\n================ GEMINI ERROR ================\n")
+            print(type(e))
+            print(e)
+            print("\n==============================================\n")
+            raise

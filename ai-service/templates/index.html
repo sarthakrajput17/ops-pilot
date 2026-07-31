@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ops-Pilot AI</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🚀 Ops-Pilot AI</h1>
+
+<p>
+Analyze Kubernetes manifests using deterministic rules +
+AI explanation.
+</p>
+
+<form
+action="/analyze"
+method="post"
+enctype="multipart/form-data"
+>
+
+<label>Question</label>
+
+<input
+type="text"
+name="message"
+placeholder="Analyze this deployment"
+value="Analyze this deployment"
+>
+
+<br><br>
+
+<label>Upload Manifest</label>
+
+<input
+type="file"
+name="manifest"
+accept=".yaml,.yml"
+>
+
+<br><br>
+
+<button type="submit">
+Analyze
+</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>
