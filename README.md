@@ -1,281 +1,148 @@
-# 🚀 Ops-Pilot
+# 🚀 Ops-Pilot AI
 
-> An end-to-end cloud-native DevOps platform demonstrating modern backend development, containerization, CI/CD, infrastructure automation, Kubernetes orchestration, monitoring, and logging.
+> **AI-Powered DevOps Copilot** for Kubernetes, Docker, Terraform and Cloud Infrastructure.
 
----
+Ops-Pilot AI is an end-to-end DevOps platform that combines traditional DevOps tooling with Generative AI to analyze infrastructure files, detect production issues, generate intelligent recommendations, and create professional PDF reports.
 
-## 📌 Overview
-
-Ops-Pilot started as a simple Flask REST API with a PostgreSQL database and gradually evolved into a production-style DevOps platform.
-
-The project demonstrates how a backend application moves through the complete DevOps lifecycle—from development and testing to containerization, infrastructure provisioning, Kubernetes deployment, observability, and cloud readiness.
-
-The long-term vision is to extend the platform into an **AI Operations Copilot** capable of assisting with deployments, monitoring, troubleshooting, and operational automation.
+It demonstrates a complete production-grade DevOps workflow including Docker, Kubernetes, Terraform, AWS, Monitoring, Logging, CI/CD, and AI-powered infrastructure analysis.
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-- RESTful Flask Backend
-- PostgreSQL Database
-- Complete CRUD APIs
+## 🤖 AI Features
+
+## 🤖 AI Features
+
+- AI-powered Kubernetes Manifest Analysis
+- AI-powered Dockerfile Analysis
+- AI-powered Terraform Configuration Analysis
+- Automatic Infrastructure Type Detection
+- Production Readiness Score
+- Overall Deployment Grade
+- Infrastructure Risk Assessment
+- AI-generated Deployment Summary
+- Production Findings Table
+- Intelligent Recommendations
+- Professional PDF Report Generation
+
+---
+
+## ⚙️ DevOps Features
+
+- FastAPI Backend
 - Docker & Docker Compose
-- GitHub Actions CI
-- Kubernetes Deployment
+- Kubernetes Deployments
 - ConfigMaps & Secrets
-- NGINX Ingress
+- Liveness / Readiness / Startup Probes
 - Horizontal Pod Autoscaler
+- NGINX Ingress
 - Terraform Infrastructure
-- AWS Deployment
+- AWS Infrastructure
+- GitHub Actions CI
 - Prometheus Monitoring
 - Grafana Dashboards
 - Loki Log Aggregation
 - Promtail Log Collection
-- Production-style Project Structure
 
 ---
 
-## 🏗️ Architecture
-
-> Overall Architecture
-
-## 🏗️ Overall Architecture
+# 🏗️ System Architecture
 
 ```mermaid
 flowchart TD
-
-A[Developer] --> B[GitHub Repository]
-B --> C[GitHub Actions CI]
-
-C --> D[Run Unit Tests]
-D --> E[Build Docker Image]
-E --> F[Push Image to Docker Hub]
-
-F --> G[Kubernetes Cluster]
-
-subgraph Kubernetes
-H[NGINX Ingress]
-I[Service]
-J[Deployment]
-K[Flask Pods x2]
-L[PostgreSQL]
-
-H --> I
-I --> J
-J --> K
-K --> L
-end
-
-subgraph Monitoring
-M[Prometheus]
-N[Grafana]
-O[Loki]
-P[Promtail]
-end
-
-K --> M
-K --> O
-P --> O
-M --> N
-```
-
----
-
-> Kubernetes Architecture
-
-## ☸️ Kubernetes Architecture
-
-```mermaid
-flowchart TD
-
-A[User]
-
-A --> B[NGINX Ingress]
-
-B --> C[Service]
-
-C --> D[Deployment]
-
-D --> E[ReplicaSet]
-
-E --> F1[Flask Pod 1]
-E --> F2[Flask Pod 2]
-
-F1 --> G[(PostgreSQL)]
-F2 --> G
-
-H[ConfigMap] --> F1
-H --> F2
-
-I[Secret] --> F1
-I --> F2
-
-J[Metrics Server] --> K[Horizontal Pod Autoscaler]
-
-K --> D
-```
-
----
-
-> CI/CD Pipeline
-
-## 🚀 CI/CD Pipeline
-
-```mermaid
-flowchart LR
 
 A[Developer]
+--> B[GitHub Repository]
 
-A --> B[Git Push]
+B --> C[GitHub Actions]
 
-B --> C[GitHub Repository]
+C --> D[Build Docker Image]
 
-C --> D[GitHub Actions]
+D --> E[Docker Hub]
 
-D --> E[Install Dependencies]
+E --> F[Kubernetes Cluster]
 
-E --> F[Run Pytest]
+subgraph Kubernetes
 
-F --> G[Build Docker Image]
+G[Ingress]
 
-G --> H[Push Docker Image]
+H[Service]
+
+I[Deployment]
+
+J[Pods]
+
+K[(PostgreSQL)]
+
+end
+
+G --> H
+
+H --> I
+
+I --> J
+
+J --> K
+
+subgraph AI
+
+L[Universal Analysis Service]
+
+M[Gemini AI]
+
+end
+
+User --> L
+
+L --> M
+
+M --> L
+
+L --> Report
+
+Report --> PDF
 ```
----
-
-> Monitoring Architecture
-
-## 📈 Monitoring Architecture
-
-```mermaid
-flowchart LR
-
-A[Flask Application]
-
-B[PostgreSQL]
-
-A --> C[Prometheus]
-
-A --> D[Promtail]
-
-D --> E[Loki]
-
-C --> F[Grafana]
-
-E --> F
-```
----
-
-# 🛠️ Tech Stack
-
-| Category | Technologies |
-|-----------|--------------|
-| Backend | Flask, Python |
-| Database | PostgreSQL |
-| Containerization | Docker, Docker Compose |
-| CI/CD | GitHub Actions |
-| Orchestration | Kubernetes |
-| Infrastructure | Terraform, AWS |
-| Monitoring | Prometheus, Grafana |
-| Logging | Loki, Promtail |
-| Version Control | Git, GitHub |
 
 ---
 
-# 📂 Project Structure
+# 🤖 AI Analysis Workflow
 
 ```text
-ops-pilot/
-│
-├── app/
-│   ├── src/
-│   ├── tests/
-│   ├── Dockerfile
-│   └── requirements.txt
-│
-├── database/
-│
-├── k8s/
-│
-├── monitoring/
-│
-├── terraform/
-|---terraform-aws
-│
-├── docs/
-│   ├── diagrams/
-│   └── screenshots/
-│
-├── .github/
-│   └── workflows/
-│
-├── docker-compose.yml
-├── .env.example
-└── README.md
+(Kubernetes • Dockerfile • Terraform)
+            │
+            ▼
+Universal Analysis Service
+            │
+            ▼
+Automatic File Detection
+            │
+            ▼
+Gemini AI
+            │
+            ▼
+Production Readiness Analysis
+            │
+            ▼
+HTML Report
+            │
+            ▼
+Professional PDF Report
 ```
 
 ---
 
-# 🌐 REST APIs
+# 📊 Sample Report
 
-| Method | Endpoint | Description |
-|----------|----------|-------------|
-| GET | `/health` | Health Check |
-| POST | `/users` | Create User |
-| GET | `/users` | Get All Users |
-| GET | `/users/{id}` | Get User By ID |
-| PUT | `/users/{id}` | Update User |
-| DELETE | `/users/{id}` | Delete User |
-
----
-
-# ☸️ Kubernetes Features
-
-- Deployment
-- Service
-- ConfigMap
-- Secret
-- Horizontal Pod Autoscaler
-- NGINX Ingress
-- Kustomize
-- Resource Limits
-- Liveness Probe
-- Readiness Probe
-
----
-
-# 📊 Monitoring Stack
-
-- Prometheus
-- Grafana
-- Loki
-- Promtail
-
-The monitoring stack provides metrics, dashboards, centralized log aggregation, and application observability.
-
----
-
-# 🚀 CI/CD
-
-GitHub Actions pipeline performs:
-
-- Dependency Installation
-- Unit Testing
-- Docker Image Build
-
-The workflow demonstrates automated validation before deployment.
-
----
-
-# 🏗️ Infrastructure
-
-Infrastructure provisioning is managed using Terraform.
-
-Current infrastructure includes:
-
-- AWS Provider Configuration
-- Variables
-- Modular Infrastructure
-- Infrastructure as Code
+| Metric | Value |
+|---------|------:|
+| Production Score | 65/100 |
+| Overall Grade | C |
+| Risk Level | MEDIUM |
+| Critical Issues | 0 |
+| High Issues | 1 |
+| Medium Issues | 1 |
+| Low Issues | 1 |
 
 ---
 
@@ -300,65 +167,259 @@ They include:
 - Grafana Dashboards
 
 ---
+## Dashboard
+
+> Add screenshot here
+
+```
+docs/screenshots/dashboard.png
+```
+
+---
+
+# 🚀 AI Capabilities
+
+Ops-Pilot AI can currently analyze:
+
+- ✅ Kubernetes Deployment YAML
+- ✅ Dockerfile
+- ✅ Terraform Configuration
+
+The AI engine automatically detects the uploaded file type and performs production-grade validation.
+
+Current validation includes:
+
+- Mutable image tags
+- Missing security context
+- Missing startup probes
+- Resource configuration
+- Terraform best practices
+- Dockerfile best practices
+- Production readiness
+- Risk assessment
+
+---
+
+# 🌐 API Endpoints
+
+| Method | Endpoint | Description |
+|----------|-----------|-------------|
+| POST | `/analyze` | Analyze Infrastructure File |
+| POST | `/download-report` | Download PDF Report |
+| GET | `/health` | Health Check |
+
+---
+
+# 🛠️ Tech Stack
+
+| Category | Technologies |
+|-----------|--------------|
+| Backend | FastAPI, Python |
+| AI | Google Gemini |
+| Templates | Jinja2 |
+| PDF | ReportLab |
+| Containerization | Docker, Docker Compose |
+| Orchestration | Kubernetes |
+| Infrastructure | Terraform |
+| Cloud | AWS |
+| CI/CD | GitHub Actions |
+| Monitoring | Prometheus |
+| Dashboard | Grafana |
+| Logging | Loki, Promtail |
+| Version Control | Git & GitHub |
+
+---
+
+# 📂 Project Structure
+
+```text
+ops-pilot/
+
+├── ai-service/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── agents/
+│   │   ├── services/
+│   │   ├── prompts/
+│   │   ├── templates/
+│   │   ├── static/
+│   │   ├── utils/
+│   │   ├── models/
+│   │   └── main.py
+│   │
+│   ├── requirements.txt
+│   └── Dockerfile
+│
+├── app/
+├── database/
+├── docs/
+├── k8s/
+├── monitoring/
+├── terraform/
+├── terraform-aws/
+├── .github/
+│   └── workflows/
+│
+├── docker-compose.yml
+├── README.md
+└── LICENSE
+```
+
+---
+
+# ☸ Kubernetes Features
+
+- Deployment
+- Service
+- ConfigMap
+- Secret
+- Resource Requests & Limits
+- Liveness Probe
+- Readiness Probe
+- Startup Probe
+- Horizontal Pod Autoscaler
+- Rolling Updates
+- NGINX Ingress
+
+---
+
+# 📈 Monitoring Stack
+
+The monitoring stack includes:
+
+- Prometheus
+- Grafana
+- Loki
+- Promtail
+
+This provides:
+
+- Metrics Collection
+- Dashboard Visualization
+- Centralized Logging
+- Application Observability
+
+---
+
+# 🚀 CI/CD
+
+GitHub Actions pipeline performs:
+
+- Install Dependencies
+- Run Tests
+- Build Docker Image
+- Validate Build
+
+Future:
+
+- Push Docker Image
+- Kubernetes Deployment
+- AI Validation Gate
+
+---
+
+# 🏗️ Infrastructure
+
+Infrastructure provisioning is managed using Terraform.
+
+Current support:
+
+- AWS
+- Infrastructure as Code
+- Variables
+- Modular Configuration
+
+---
 
 # 🚀 Getting Started
 
 Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/ops-pilot.git
+git clone https://github.com/sarthakrajput17/ops-pilot.git
+```
+
+Go into the project
+
+```bash
+cd ops-pilot
+```
+
+Create a virtual environment
+
+```bash
+python -m venv venv
+```
+
+Activate
+
+Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+Windows
+
+```bash
+venv\Scripts\activate
 ```
 
 Install dependencies
 
 ```bash
-pip install -r app/requirements.txt
+pip install -r ai-service/requirements.txt
 ```
 
-Start Docker Compose
+Run FastAPI
 
 ```bash
-docker compose up -d
+cd ai-service
+uvicorn app.main:app --reload
 ```
 
-Run the application
-
-```bash
-cd app/src
-python main.py
-```
-
-Access the API
+Open
 
 ```
-http://localhost:5001/health
+http://127.0.0.1:8000
 ```
 
 ---
 
 # 🗺️ Roadmap
 
-Completed
+## ✅ Completed
 
-- Flask Backend
-- PostgreSQL
-- CRUD APIs
+- FastAPI Backend
 - Docker
 - Docker Compose
 - GitHub Actions
-- Terraform
-- AWS
 - Kubernetes
-- Monitoring
-- Logging
+- Terraform
+- AWS Infrastructure
+- Prometheus
+- Grafana
+- Loki
+- AI Kubernetes Analysis
+- Production Readiness Scoring
+- PDF Report Generation
+- Dockerfile Analysis
+- Terraform Analysis
 
-Upcoming
+---
 
-- AI Operations Copilot
-- AI-assisted Deployment Analysis
-- Intelligent Log Analysis
-- AI Infrastructure Assistant
-- Kubernetes Troubleshooting Assistant
+## 🚧 Upcoming
+
+- Docker Compose Analysis
+- Helm Chart Analysis
+- GitHub Actions Workflow Analysis
+- AI Deployment Execution
+- Kubernetes Auto Deployment
+- AI Infrastructure Generation
+- AI Log Analysis
+- Multi-cloud Support
+- Azure Support
+- GCP Support
 
 ---
 
@@ -366,8 +427,16 @@ Upcoming
 
 **Sarthak Rajput**
 
-DevOps | Cloud | Automation
+DevOps • Cloud • Kubernetes • AI • Automation
+
+GitHub: https://github.com/sarthakrajput17
+LinkedIn: https://www.linkedin.com/in/sarthak-rajput-0135971b5/
+
 
 ---
 
-## ⭐ If you found this project useful, consider giving it a star.
+# ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
+
+It helps others discover the project and motivates future development.
