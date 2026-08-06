@@ -1,16 +1,40 @@
 # 🚀 Ops-Pilot AI
 
-> **AI-Powered DevOps Copilot** for Kubernetes, Docker, Terraform and Cloud Infrastructure.
+<p align="center">
 
-Ops-Pilot AI is an end-to-end DevOps platform that combines traditional DevOps tooling with Generative AI to analyze infrastructure files, detect production issues, generate intelligent recommendations, and create professional PDF reports.
+**AI-powered DevOps Copilot for Kubernetes, Docker & Terraform**
 
-It demonstrates a complete production-grade DevOps workflow including Docker, Kubernetes, Terraform, AWS, Monitoring, Logging, CI/CD, and AI-powered infrastructure analysis.
+Production-ready infrastructure analysis with Google Gemini, automated DevOps best-practice validation, and professional PDF reporting.
+
+</p>
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-Orchestration-326CE5)
+![Terraform](https://img.shields.io/badge/Terraform-IaC-844FBA)
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+</p>
 
 ---
 
-# ✨ Features
+Ops-Pilot AI is an end-to-end DevOps platform that combines traditional DevOps tooling with Generative AI to analyze infrastructure files, detect production issues, generate intelligent recommendations, and generate professional PDF reports.
 
-## 🤖 AI Features
+The platform currently supports:
+
+- ✅ Kubernetes Manifest Analysis
+- ✅ Dockerfile Analysis
+- ✅ Terraform Configuration Analysis
+- ✅ AI-generated Infrastructure Recommendations
+- ✅ Production Readiness Scoring
+- ✅ Professional PDF Report Generation
+
+
+# ✨ Features
 
 ## 🤖 AI Features
 
@@ -148,46 +172,61 @@ Professional PDF Report
 
 # 📸 Screenshots
 
-Screenshots are available under:
+Project screenshots are available under:
 
 ```text
 docs/screenshots/
 ```
 
-They include:
+The repository contains screenshots for:
 
 - Flask APIs
-- Docker
-- Docker Compose
+- Docker & Docker Compose
 - GitHub Actions
 - Terraform
-- AWS
+- AWS Infrastructure
 - Kubernetes
-- Monitoring
-- Grafana Dashboards
+- Monitoring Stack
+- AI Analysis Dashboard
+- Generated PDF Reports
 
----
-## Dashboard
+## 🤖 AI Analysis
 
-> Add screenshot here
+### Home Page
 
-```
-docs/screenshots/dashboard.png
-```
+![Home](docs/screenshots/11-ai-analysis/home-page.png)
+
+### Kubernetes Analysis
+
+![Kubernetes Analysis](docs/screenshots/11-ai-analysis/kubernetes-analysis-top.png)
+
+![Kubernetes Findings](docs/screenshots/11-ai-analysis/kubernetes-analysis-bottom.png)
+
+### Docker Analysis
+
+![Docker Analysis](docs/screenshots/11-ai-analysis/docker-analysis-top.png)
+
+![Docker Findings](docs/screenshots/11-ai-analysis/docker-analysis-bottom.png)
+
+### Generated PDF Report
+
+![PDF Report Page 1](docs/screenshots/11-ai-analysis/pdf-report-page1.png)
+
+![PDF Report Page 2](docs/screenshots/11-ai-analysis/pdf-report-page2.png)
 
 ---
 
 # 🚀 AI Capabilities
 
-Ops-Pilot AI can currently analyze:
+Ops-Pilot AI currently supports:
 
 - ✅ Kubernetes Deployment YAML
 - ✅ Dockerfile
 - ✅ Terraform Configuration
 
-The AI engine automatically detects the uploaded file type and performs production-grade validation.
+The Universal Analysis Service automatically detects the uploaded file type and applies production-grade validation before generating an AI-powered report.
 
-Current validation includes:
+The AI engine currently evaluates:
 
 - Mutable image tags
 - Missing security context
@@ -312,9 +351,10 @@ GitHub Actions pipeline performs:
 
 Future:
 
-- Push Docker Image
-- Kubernetes Deployment
+- Automatic Docker Image Publishing
+- Kubernetes Deployment Automation
 - AI Validation Gate
+- Helm-based Deployment Support
 
 ---
 
@@ -326,6 +366,8 @@ Current support:
 
 - AWS
 - Infrastructure as Code
+  (terraform/ – reusable Terraform modules and examples
+  terraform-aws/ – AWS deployment configuration)
 - Variables
 - Modular Configuration
 
@@ -371,6 +413,14 @@ Install dependencies
 pip install -r ai-service/requirements.txt
 ```
 
+Configure environment
+
+```bash
+cp ai-service/.env.example ai-service/.env
+```
+
+Edit `.env` and add your Google Gemini API key.
+
 Run FastAPI
 
 ```bash
@@ -391,20 +441,19 @@ http://127.0.0.1:8000
 ## ✅ Completed
 
 - FastAPI Backend
+- Universal Analysis Service
+- Automatic File Detection
+- Dockerfile Analysis
+- Terraform Analysis
+- Kubernetes Analysis
+- AI-powered PDF Reports
+- Production Readiness Scoring
+- Terraform Infrastructure
+- AWS Infrastructure
 - Docker
 - Docker Compose
 - GitHub Actions
-- Kubernetes
-- Terraform
-- AWS Infrastructure
-- Prometheus
-- Grafana
-- Loki
-- AI Kubernetes Analysis
-- Production Readiness Scoring
-- PDF Report Generation
-- Dockerfile Analysis
-- Terraform Analysis
+- Monitoring Stack
 
 ---
 
@@ -429,8 +478,8 @@ http://127.0.0.1:8000
 
 DevOps • Cloud • Kubernetes • AI • Automation
 
-GitHub: https://github.com/sarthakrajput17
-LinkedIn: https://www.linkedin.com/in/sarthak-rajput-0135971b5/
+GitHub: github.com/sarthakrajput17
+LinkedIn: linkedin.com/in/sarthak-rajput-0135971b5
 
 
 ---
