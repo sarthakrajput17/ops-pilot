@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Ops-Pilot AI</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="hero">
+
+        <h1>🚀 Ops-Pilot AI</h1>
+
+        <p>
+            AI-powered DevOps Configuration Analyzer
+        </p>
+
+        <p class="subtitle">
+            Upload Kubernetes manifests, Dockerfiles, or Terraform configurations.
+            Ops-Pilot automatically detects the file type, validates it using
+            production-grade rules, calculates a readiness score and generates
+            AI-powered recommendations.
+        </p>
+
+    </div>
+
+    <div class="tech-section">
+
+        <h2>Supported Technologies</h2>
+
+        <div class="tech-grid">
+
+            <div class="tech-card">
+
+                <div class="emoji">☸️</div>
+
+                <h3>Kubernetes</h3>
+
+                <p>Manifest Validation</p>
+
+            </div>
+
+            <div class="tech-card">
+
+                <div class="emoji">🐳</div>
+
+                <h3>Docker</h3>
+
+                <p>Dockerfile Best Practices</p>
+
+            </div>
+
+            <div class="tech-card">
+
+                <div class="emoji">🏗️</div>
+
+                <h3>Terraform</h3>
+
+                <p>Infrastructure Validation</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <form
+        action="/analyze"
+        method="post"
+        enctype="multipart/form-data"
+        class="upload-form"
+    >
+
+        <label>Ask AI</label>
+
+        <input
+            type="text"
+            name="question"
+            placeholder="Analyze this configuration"
+            value="Analyze this configuration"
+        >
+
+        <label>Upload DevOps Configuration</label>
+
+        <div class="upload-box">
+
+            <input
+                type="file"
+                name="file"
+                accept=".yaml,.yml,.tf,.json,Dockerfile"
+                required
+            >
+
+            <small>
+
+                Supported:
+                Kubernetes YAML • Dockerfile • Terraform
+
+            </small>
+
+        </div>
+
+        <button type="submit">
+
+            🚀 Analyze Configuration
+
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

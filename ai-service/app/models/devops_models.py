@@ -1,16 +1,15 @@
 from pydantic import BaseModel
-
 from app.models.finding import Finding
 
 
-class KubernetesStatistics(BaseModel):
+class DevOpsStatistics(BaseModel):
     critical: int = 0
     high: int = 0
     medium: int = 0
     low: int = 0
 
 
-class KubernetesAnalysis(BaseModel):
+class DevOpsAnalysis(BaseModel):
 
     summary: str
 
@@ -28,6 +27,8 @@ class KubernetesAnalysis(BaseModel):
 
     risk: str = "LOW"
 
-    statistics: KubernetesStatistics = KubernetesStatistics()
+    statistics: DevOpsStatistics = DevOpsStatistics()
 
     fixed_manifest: str = ""
+
+    tool: str = ""

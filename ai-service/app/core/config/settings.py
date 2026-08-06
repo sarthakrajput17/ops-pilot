@@ -3,6 +3,10 @@ import os
 
 load_dotenv()
 
+print("API KEY :", os.getenv("LLM_API_KEY"))
+print("MODEL   :", os.getenv("LLM_MODEL"))
+print("PROVIDER:", os.getenv("LLM_PROVIDER"))
+
 
 class Settings:
 

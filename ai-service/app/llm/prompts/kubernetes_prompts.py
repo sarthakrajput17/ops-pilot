@@ -81,4 +81,21 @@ Do not return markdown.
 Do not return code fences.
 
 Return JSON only.
+--------------------------------------------------
+
+You MUST return a structured response.
+
+Additionally, generate a production-ready corrected Kubernetes manifest.
+
+Rules:
+
+- Fix every validation issue.
+- Add missing Kubernetes best practices.
+- Preserve the application's behaviour.
+- Do NOT remove resources.
+- Return the complete corrected YAML.
+
+Store the corrected YAML in the field:
+
+fixed_manifest
 """

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ops-Pilot AI Report</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/report.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="hero">
+        <h1>🚀 Ops-Pilot AI</h1>
+        <p class="subtitle">DevOps Analysis Report</p>
+    </div>
+
+    <!-- ================= Summary Cards ================= -->
+
+    <div class="cards">
+
+        <div class="card">
+            <h2>{{ analysis.score }}/100</h2>
+            <p>Production Score</p>
+
+            <div class="progress">
+                <div
+                    class="progress-bar"
+                    style="width: {{ analysis.score }}%;"
+                ></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>{{ analysis.grade }}</h2>
+            <p>Overall Grade</p>
+        </div>
+
+        <div class="card">
+
+            <span class="badge {{ analysis.risk|lower }}">
+                {{ analysis.risk }}
+            </span>
+
+            <p>Risk Level</p>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Statistics ================= -->
+
+    <h2>Statistics</h2>
+
+    <div class="stats">
+
+        <div class="stat critical">
+            <p>Critical</p>
+            <h3>{{ analysis.statistics.critical }}</h3>
+        </div>
+
+        <div class="stat high">
+            <p>High</p>
+            <h3>{{ analysis.statistics.high }}</h3>
+        </div>
+
+        <div class="stat medium">
+            <p>Medium</p>
+            <h3>{{ analysis.statistics.medium }}</h3>
+        </div>
+
+        <div class="stat low">
+            <p>Low</p>
+            <h3>{{ analysis.statistics.low }}</h3>
+        </div>
+
+    </div>
+
+    <!-- ================= AI Summary ================= -->
+
+    <div class="section">
+
+        <h2>🤖 AI Summary</h2>
+
+        <div class="summary">
+            {{ analysis.summary }}
+        </div>
+
+    </div>
+
+    <!-- ================= Findings ================= -->
+
+    <div class="section">
+
+        <h2>Production Findings</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Rule</th>
+                    <th>Severity</th>
+                    <th>Issue</th>
+                    <th>Recommendation</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for item in analysis.validation_issues %}
+
+                <tr>
+
+                    <td>{{ item.rule_id }}</td>
+
+                    <td>
+                        <span class="badge {{ item.severity.lower() }}">
+                            {{ item.severity }}
+                        </span>
+                    </td>
+
+                    <td>{{ item.title }}</td>
+
+                    <td>{{ item.recommendation }}</td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- ================= Recommendations ================= -->
+
+    <div class="section">
+
+        <h2>AI Recommendations</h2>
+
+        {% for rec in analysis.recommendations %}
+
+            <div class="recommendation-card">
+                {{ rec }}
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- ================= Actions ================= -->
+
+    <div class="actions">
+
+        <form action="/download-report" method="post">
+
+            <button
+                class="secondary-button"
+                type="submit">
+
+                📄 Download PDF Report
+
+            </button>
+
+        </form>
+
+        <br><br>
+
+        <a href="/" class="button">
+            Analyze Another File
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
