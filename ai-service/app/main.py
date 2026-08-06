@@ -10,6 +10,7 @@ from app.api.routes.kubernetes import router as kubernetes_router
 from app.api.routes.docker import router as docker_router
 from app.api.routes.terraform import router as terraform_router
 from app.api.routes.analyze import router as analyze_router
+from app.api.routes.pdf import router as pdf_router
 
 
 app = FastAPI(
@@ -22,13 +23,13 @@ templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-@app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="index.html",
-        context={},
-    )
+# @app.get("/", response_class=HTMLResponse)
+# async def home(request: Request):
+#     return templates.TemplateResponse(
+#         request=request,
+#         name="index.html",
+#         context={},
+#     )
 
 
 app.include_router(health_router)
@@ -38,3 +39,4 @@ app.include_router(web_router)
 app.include_router(docker_router)
 app.include_router(terraform_router)
 app.include_router(analyze_router)
+app.include_router(pdf_router)

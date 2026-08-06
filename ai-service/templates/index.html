@@ -1,55 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
+    <meta charset="UTF-8">
+
     <title>Ops-Pilot AI</title>
 
     <link rel="stylesheet" href="/static/css/style.css">
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>🚀 Ops-Pilot AI</h1>
+    <div class="hero">
 
-<p>
-Analyze Kubernetes manifests using deterministic rules +
-AI explanation.
-</p>
+        <h1>🚀 Ops-Pilot AI</h1>
 
-<form
-action="/analyze"
-method="post"
-enctype="multipart/form-data"
->
+        <p>
+            AI-powered DevOps Configuration Analyzer
+        </p>
 
-<label>Question</label>
+        <p class="subtitle">
+            Upload Kubernetes manifests, Dockerfiles, or Terraform configurations.
+            Ops-Pilot automatically detects the file type, validates it using
+            production-grade rules, calculates a readiness score and generates
+            AI-powered recommendations.
+        </p>
 
-<input
-type="text"
-name="message"
-placeholder="Analyze this deployment"
-value="Analyze this deployment"
->
+    </div>
 
-<br><br>
+    <div class="tech-section">
 
-<label>Upload Manifest</label>
+        <h2>Supported Technologies</h2>
 
-<input
-type="file"
-name="manifest"
-accept=".yaml,.yml"
->
+        <div class="tech-grid">
 
-<br><br>
+            <div class="tech-card">
 
-<button type="submit">
-Analyze
-</button>
+                <div class="emoji">☸️</div>
 
-</form>
+                <h3>Kubernetes</h3>
+
+                <p>Manifest Validation</p>
+
+            </div>
+
+            <div class="tech-card">
+
+                <div class="emoji">🐳</div>
+
+                <h3>Docker</h3>
+
+                <p>Dockerfile Best Practices</p>
+
+            </div>
+
+            <div class="tech-card">
+
+                <div class="emoji">🏗️</div>
+
+                <h3>Terraform</h3>
+
+                <p>Infrastructure Validation</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <form
+        action="/analyze"
+        method="post"
+        enctype="multipart/form-data"
+        class="upload-form"
+    >
+
+        <label>Ask AI</label>
+
+        <input
+            type="text"
+            name="question"
+            placeholder="Analyze this configuration"
+            value="Analyze this configuration"
+        >
+
+        <label>Upload DevOps Configuration</label>
+
+        <div class="upload-box">
+
+            <input
+                type="file"
+                name="file"
+                accept=".yaml,.yml,.tf,.json,Dockerfile"
+                required
+            >
+
+            <small>
+
+                Supported:
+                Kubernetes YAML • Dockerfile • Terraform
+
+            </small>
+
+        </div>
+
+        <button type="submit">
+
+            🚀 Analyze Configuration
+
+        </button>
+
+    </form>
 
 </div>
 
