@@ -229,3 +229,6 @@ terraform.tfstate.*
 
 # macOS
 .DS_Store
+
+# GitHub Actions self-hosted runner
+actions-runner/

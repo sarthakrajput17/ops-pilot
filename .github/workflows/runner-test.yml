@@ -1,0 +1,21 @@
+name: Self Hosted Runner Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-runner:
+    runs-on: self-hosted
+
+    steps:
+      - name: Test Runner
+        run: |
+          echo "Hello from Ops-Pilot self-hosted runner!"
+          echo "Hostname:"
+          hostname
+          echo "Docker:"
+          docker --version
+          echo "Kubectl:"
+          kubectl version --client
+          echo "Kubernetes Context:"
+          kubectl config current-context
