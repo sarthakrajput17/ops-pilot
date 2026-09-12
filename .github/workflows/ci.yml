@@ -139,8 +139,12 @@
             echo "Checking application health..."
 
             kubectl run ops-pilot-health-check \
-              --rm \
+              -n ops-pilot \
               --restart=Never \
               --image=curlimages/curl:latest \
               -- \
-              curl -f http://ops-pilot-service.ops-pilot.svc.cluster.local:5001/health
+              curl -f http://ops-pilot-service:5001/health
+
+            kubectl delete pod ops-pilot-health-check \
+              -n ops-pilot \
+              --ignore-not-found=true
