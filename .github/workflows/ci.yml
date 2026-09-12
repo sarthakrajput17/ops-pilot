@@ -133,3 +133,14 @@
 
             echo "Deployment:"
             kubectl get deployment ops-pilot -n ops-pilot
+
+        - name: Health Check
+          run: |
+            echo "Checking application health..."
+
+            kubectl run ops-pilot-health-check \
+              --rm \
+              --restart=Never \
+              --image=curlimages/curl:latest \
+              -- \
+              curl -f http://ops-pilot-service.ops-pilot.svc.cluster.local:5001/health
