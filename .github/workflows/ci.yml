@@ -105,3 +105,31 @@
             tags: |
               ${{ secrets.DOCKER_USERNAME }}/ops-pilot:latest
               ${{ secrets.DOCKER_USERNAME }}/ops-pilot:${{ github.sha }}
+
+    deploy-k8s:
+      needs: docker-build
+      runs-on: self-hosted
+
+      steps:
+        - name: Deploy to Kubernetes
+          run: |
+            echo "Kubernetes context:"
+            kubectl config current-context
+
+            echo "Updating Ops-Pilot deployment..."
+            kubectl -n ops-pilot set image deployment/ops-pilot \
+              ops-pilot=${{ secrets.DOCKER_USERNAME }}/ops-pilot:${{ github.sha }}
+
+        - name: Wait for rollout
+          run: |
+            kubectl rollout status deployment/ops-pilot \
+              -n ops-pilot \
+              --timeout=180s
+
+        - name: Verify deployment
+          run: |
+            echo "Pods:"
+            kubectl get pods -n ops-pilot
+
+            echo "Deployment:"
+            kubectl get deployment ops-pilot -n ops-pilot
