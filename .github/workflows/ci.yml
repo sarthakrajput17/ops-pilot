@@ -148,3 +148,19 @@
             kubectl delete pod ops-pilot-health-check \
               -n ops-pilot \
               --ignore-not-found=true
+
+        - name: Rollback on failure
+          if: failure()
+          run: |
+            echo "Deployment failed. Rolling back..."
+
+            kubectl rollout undo deployment/ops-pilot \
+              -n ops-pilot
+
+            kubectl rollout status deployment/ops-pilot \
+              -n ops-pilot \
+              --timeout=180s
+
+            echo "Rollback completed."
+
+            kubectl get pods -n ops-pilot
