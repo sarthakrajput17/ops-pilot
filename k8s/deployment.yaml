@@ -26,7 +26,7 @@ spec:
       containers:
         - name: ops-pilot
 
-          image: sarthakrajput17/ops-pilot:f29bbf4
+          image: sarthakrajput17/ops-pilot:1bfda6889a72b9132ef677f0759e9cfc3e059641
           imagePullPolicy: Always
 
           # CPU requests are required for HPA to calculate CPU utilization.

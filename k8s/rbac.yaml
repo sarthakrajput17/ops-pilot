@@ -1,0 +1,32 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ops-pilot-deployer
+  namespace: ops-pilot
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "patch"]
+
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "create", "delete"]
+
+  - apiGroups: ["apps"]
+    resources: ["replicasets"]
+    verbs: ["get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ops-pilot-deployer
+  namespace: ops-pilot
+subjects:
+  - kind: ServiceAccount
+    name: ops-pilot-deployer
+    namespace: ops-pilot
+roleRef:
+  kind: Role
+  name: ops-pilot-deployer
+  apiGroup: rbac.authorization.k8s.io    
