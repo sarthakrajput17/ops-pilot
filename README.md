@@ -1,279 +1,202 @@
-# 🚀 Ops-Pilot AI
+# Ops-Pilot AI
 
-<p align="center">
+An AI-assisted DevOps project for analyzing infrastructure
+configurations and practicing application delivery with Docker,
+Kubernetes, GitHub Actions, and Argo CD.
 
-**AI-powered DevOps Copilot for Kubernetes, Docker & Terraform**
+Ops-Pilot has two main application components:
 
-Production-ready infrastructure analysis with Google Gemini, automated DevOps best-practice validation, and professional PDF reporting.
+-   **Flask API (`app/`)**: a PostgreSQL-backed application with user
+    CRUD endpoints, health checks, and Prometheus metrics.
+-   **AI service (`ai-service/`)**: a FastAPI service that analyzes
+    Kubernetes manifests, Dockerfiles, and Terraform files. It combines
+    rule-based checks with Google Gemini explanations and can generate
+    PDF reports.
 
-</p>
+This repository is a hands-on project and development environment. Some
+components have been tested locally; it is not intended to represent a
+fully production-hardened platform.
 
-<p align="center">
+## Features
 
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
-![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-Orchestration-326CE5)
-![Terraform](https://img.shields.io/badge/Terraform-IaC-844FBA)
-![AWS](https://img.shields.io/badge/AWS-Cloud-orange)
-![License](https://img.shields.io/badge/License-MIT-green)
+### Infrastructure analysis
 
-</p>
+-   Detects whether an uploaded file is a Kubernetes manifest,
+    Dockerfile, or Terraform configuration.
+-   Runs deterministic checks for selected configuration issues.
+-   Uses Google Gemini to provide explanations and recommendations when
+    configured.
+-   Produces findings, a readiness score, and a downloadable PDF report.
 
----
+The score is a project-specific indicator, not a formal security audit
+or guarantee of production readiness.
 
-Ops-Pilot AI is an end-to-end DevOps platform that combines traditional DevOps tooling with Generative AI to analyze infrastructure files, detect production issues, generate intelligent recommendations, and generate professional PDF reports.
+### Application and delivery
 
-The platform currently supports:
+-   Flask API with PostgreSQL.
+-   Dockerfiles and Docker Compose configuration.
+-   Kubernetes manifests managed with Kustomize.
+-   ConfigMaps, Secrets, probes, resource requests and limits, and an
+    HPA.
+-   GitHub Actions for testing and Docker image publishing.
+-   An automated pull request to update the Kubernetes image tag.
+-   Argo CD configured to track the Kubernetes manifests in Git and
+    auto-sync changes.
 
-- ✅ Kubernetes Manifest Analysis
-- ✅ Dockerfile Analysis
-- ✅ Terraform Configuration Analysis
-- ✅ AI-generated Infrastructure Recommendations
-- ✅ Production Readiness Scoring
-- ✅ Professional PDF Report Generation
+### Monitoring
 
+The local monitoring setup includes Prometheus, Grafana, cAdvisor, Loki,
+and Promtail. It covers application/container metrics and centralized
+container logs.
 
-# ✨ Features
+## Architecture
 
-## 🤖 AI Features
-
-- AI-powered Kubernetes Manifest Analysis
-- AI-powered Dockerfile Analysis
-- AI-powered Terraform Configuration Analysis
-- Automatic Infrastructure Type Detection
-- Production Readiness Score
-- Overall Deployment Grade
-- Infrastructure Risk Assessment
-- AI-generated Deployment Summary
-- Production Findings Table
-- Intelligent Recommendations
-- Professional PDF Report Generation
-
----
-
-## ⚙️ DevOps Features
-
-- FastAPI Backend
-- Docker & Docker Compose
-- Kubernetes Deployments
-- ConfigMaps & Secrets
-- Liveness / Readiness / Startup Probes
-- Horizontal Pod Autoscaler
-- NGINX Ingress
-- Terraform Infrastructure
-- AWS Infrastructure
-- GitHub Actions CI
-- Prometheus Monitoring
-- Grafana Dashboards
-- Loki Log Aggregation
-- Promtail Log Collection
-
----
-
-# 🏗️ System Architecture
-
-```mermaid
+``` mermaid
 flowchart TD
+    Developer[Developer] --> GitHub[GitHub repository]
+    GitHub --> Actions[GitHub Actions]
+    Actions --> Tests[Run tests]
+    Tests --> Build[Build and publish image]
+    Build --> Registry[Docker Hub]
+    Actions --> ManifestPR[Open image update PR]
+    ManifestPR --> Main[Merge to main]
+    Main --> Argo[Argo CD]
+    Argo --> Cluster[Kubernetes]
+    Cluster --> Ingress[Ingress]
+    Ingress --> Service[Application Service]
+    Service --> Deployment[Deployment]
+    Deployment --> Pods[Flask Pods]
+    Pods --> DB[(PostgreSQL)]
 
-A[Developer]
---> B[GitHub Repository]
+    User[User] --> FastAPI[FastAPI AI service]
+    FastAPI --> Analysis[Infrastructure analysis]
+    Analysis --> Gemini[Google Gemini]
+    Analysis --> PDF[PDF report]
 
-B --> C[GitHub Actions]
-
-C --> D[Build Docker Image]
-
-D --> E[Docker Hub]
-
-E --> F[Kubernetes Cluster]
-
-subgraph Kubernetes
-
-G[Ingress]
-
-H[Service]
-
-I[Deployment]
-
-J[Pods]
-
-K[(PostgreSQL)]
-
-end
-
-G --> H
-
-H --> I
-
-I --> J
-
-J --> K
-
-subgraph AI
-
-L[Universal Analysis Service]
-
-M[Gemini AI]
-
-end
-
-User --> L
-
-L --> M
-
-M --> L
-
-L --> Report
-
-Report --> PDF
+    Pods --> Metrics[/metrics]
+    Metrics --> Prometheus[Prometheus]
+    Prometheus --> Grafana[Grafana]
+    Pods --> Logs[Container logs]
+    Logs --> Promtail[Promtail]
+    Promtail --> Loki[Loki]
+    Loki --> Grafana
 ```
 
----
+The Flask application and AI service are separate components. The AI
+service is not shown as part of the Flask API request path.
 
-# 🤖 AI Analysis Workflow
+## GitOps delivery
 
-```text
-(Kubernetes • Dockerfile • Terraform)
-            │
-            ▼
-Universal Analysis Service
-            │
-            ▼
-Automatic File Detection
-            │
-            ▼
-Gemini AI
-            │
-            ▼
-Production Readiness Analysis
-            │
-            ▼
-HTML Report
-            │
-            ▼
-Professional PDF Report
-```
+The Flask application's delivery workflow is:
 
----
+1.  A code change is merged into `main`.
+2.  GitHub Actions runs the tests.
+3.  If the tests pass, the workflow builds and pushes a Docker image
+    tagged with the commit SHA. It also publishes the `latest` tag.
+4.  The workflow updates the image reference in `k8s/deployment.yaml`
+    and opens or updates a pull request.
+5.  After the manifest pull request is merged, Argo CD detects the
+    change and auto-syncs the application to Kubernetes.
+6.  The rollout and application endpoint can be checked in the cluster.
 
-# 📊 Sample Report
+### End-to-end test
 
-| Metric | Value |
-|---------|------:|
-| Production Score | 65/100 |
-| Overall Grade | C |
-| Risk Level | MEDIUM |
-| Critical Issues | 0 |
-| High Issues | 1 |
-| Medium Issues | 1 |
-| Low Issues | 1 |
+I tested this flow by adding a `/version` endpoint and a corresponding
+test to the Flask application.
 
----
+During the test:
 
-# 📸 Screenshots
+-   The feature pull request was merged.
+-   GitHub Actions completed the test and image build/publish jobs.
+-   The workflow created an image-update pull request, which was merged.
+-   The image reference in `k8s/deployment.yaml` matched the image
+    configured on the live Kubernetes Deployment.
+-   Argo CD reported the application as `Synced` and `Healthy`.
+-   The application Pods were ready and the Deployment rollout
+    completed.
+-   The `/version` endpoint returned the expected response through a
+    Kubernetes Service port-forward.
 
-Project screenshots are available under:
+This test was performed in a local Docker Desktop Kubernetes
+environment.
 
-```text
-docs/screenshots/
-```
+## AI analysis
 
-The repository contains screenshots for:
+The AI service supports these file types:
 
-- Flask APIs
-- Docker & Docker Compose
-- GitHub Actions
-- Terraform
-- AWS Infrastructure
-- Kubernetes
-- Monitoring Stack
-- AI Analysis Dashboard
-- Generated PDF Reports
+  -----------------------------------------------------------------------
+  File type                           Examples of checks
+  ----------------------------------- -----------------------------------
+  Kubernetes manifests                Image tags, replica count,
+                                      resources, probes, and security
+                                      context
 
-## 🤖 AI Analysis
+  Dockerfiles                         Mutable base image tags and
+                                      selected container best practices
 
-### Home Page
+  Terraform                           Broad network access such as
+                                      `0.0.0.0/0`, provider version
+                                      constraints, and tags
+  -----------------------------------------------------------------------
 
-![Home](docs/screenshots/11-ai-analysis/home-page.png)
+The rule-based checks identify known patterns. Gemini is used for
+explanations and recommendations when an API key and supported model are
+configured. Review findings before applying changes to infrastructure.
 
-### Kubernetes Analysis
+## API endpoints
 
-![Kubernetes Analysis](docs/screenshots/11-ai-analysis/kubernetes-analysis-top.png)
+### Flask application
 
-![Kubernetes Findings](docs/screenshots/11-ai-analysis/kubernetes-analysis-bottom.png)
+  Method     Endpoint             Description
+  ---------- -------------------- ------------------------------------------
+  `GET`      `/health`            Checks application/database connectivity
+  `GET`      `/version`           Returns the application name and version
+  `GET`      `/users`             Lists users
+  `POST`     `/users`             Creates a user
+  `GET`      `/users/{user_id}`   Gets a user
+  `PUT`      `/users/{user_id}`   Updates a user
+  `DELETE`   `/users/{user_id}`   Deletes a user
+  `GET`      `/metrics`           Exposes Prometheus metrics
 
-### Docker Analysis
+### FastAPI AI service
 
-![Docker Analysis](docs/screenshots/11-ai-analysis/docker-analysis-top.png)
+  Method   Endpoint             Description
+  -------- -------------------- ---------------------------------------------
+  `POST`   `/analyze`           Uploads and analyzes an infrastructure file
+  `POST`   `/download-report`   Downloads the latest analysis report
+  `GET`    `/health`            Health check
 
-![Docker Findings](docs/screenshots/11-ai-analysis/docker-analysis-bottom.png)
+The FastAPI interactive documentation is available at `/docs` when the
+service is running.
 
-### Generated PDF Report
+## Technology
 
-![PDF Report Page 1](docs/screenshots/11-ai-analysis/pdf-report-page1.png)
+  Area                     Tools
+  ------------------------ ------------------------
+  Language                 Python
+  Application API          Flask
+  AI API                   FastAPI
+  AI provider              Google Gemini
+  Database                 PostgreSQL
+  PDF generation           ReportLab
+  Templates                Jinja2
+  Containers               Docker, Docker Compose
+  Orchestration            Kubernetes
+  GitOps                   Argo CD, Kustomize
+  CI/CD                    GitHub Actions
+  Image registry           Docker Hub
+  Infrastructure as Code   Terraform
+  Metrics and dashboards   Prometheus, Grafana
+  Logging                  Loki, Promtail
+  Version control          Git, GitHub
 
-![PDF Report Page 2](docs/screenshots/11-ai-analysis/pdf-report-page2.png)
+## Repository structure
 
----
-
-# 🚀 AI Capabilities
-
-Ops-Pilot AI currently supports:
-
-- ✅ Kubernetes Deployment YAML
-- ✅ Dockerfile
-- ✅ Terraform Configuration
-
-The Universal Analysis Service automatically detects the uploaded file type and applies production-grade validation before generating an AI-powered report.
-
-The AI engine currently evaluates:
-
-- Mutable image tags
-- Missing security context
-- Missing startup probes
-- Resource configuration
-- Terraform best practices
-- Dockerfile best practices
-- Production readiness
-- Risk assessment
-
----
-
-# 🌐 API Endpoints
-
-| Method | Endpoint | Description |
-|----------|-----------|-------------|
-| POST | `/analyze` | Analyze Infrastructure File |
-| POST | `/download-report` | Download PDF Report |
-| GET | `/health` | Health Check |
-
----
-
-# 🛠️ Tech Stack
-
-| Category | Technologies |
-|-----------|--------------|
-| Backend | FastAPI, Python |
-| AI | Google Gemini |
-| Templates | Jinja2 |
-| PDF | ReportLab |
-| Containerization | Docker, Docker Compose |
-| Orchestration | Kubernetes |
-| Infrastructure | Terraform |
-| Cloud | AWS |
-| CI/CD | GitHub Actions |
-| Monitoring | Prometheus |
-| Dashboard | Grafana |
-| Logging | Loki, Promtail |
-| Version Control | Git & GitHub |
-
----
-
-# 📂 Project Structure
-
-```text
+``` text
 ops-pilot/
-
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── ai-service/
 │   ├── app/
 │   │   ├── api/
@@ -285,207 +208,246 @@ ops-pilot/
 │   │   ├── utils/
 │   │   ├── models/
 │   │   └── main.py
-│   │
 │   ├── requirements.txt
 │   └── Dockerfile
-│
 ├── app/
+│   ├── src/
+│   ├── tests/
+│   ├── requirements.txt
+│   └── Dockerfile
 ├── database/
 ├── docs/
+│   └── screenshots/
 ├── k8s/
 ├── monitoring/
 ├── terraform/
 ├── terraform-aws/
-├── .github/
-│   └── workflows/
-│
 ├── docker-compose.yml
 ├── README.md
 └── LICENSE
 ```
 
----
+## Running locally
 
-# ☸ Kubernetes Features
+### Requirements
 
-- Deployment
-- Service
-- ConfigMap
-- Secret
-- Resource Requests & Limits
-- Liveness Probe
-- Readiness Probe
-- Startup Probe
-- Horizontal Pod Autoscaler
-- Rolling Updates
-- NGINX Ingress
+-   Python 3.11 or newer
+-   Git
+-   Docker and Docker Compose
+-   A Google Gemini API key for AI-generated analysis
 
----
+Kubernetes and Terraform are only needed for their respective workflows.
 
-# 📈 Monitoring Stack
+### Set up the AI service
 
-The monitoring stack includes:
+Clone the repository and create a virtual environment:
 
-- Prometheus
-- Grafana
-- Loki
-- Promtail
-
-This provides:
-
-- Metrics Collection
-- Dashboard Visualization
-- Centralized Logging
-- Application Observability
-
----
-
-# 🚀 CI/CD
-
-GitHub Actions pipeline performs:
-
-- Install Dependencies
-- Run Tests
-- Build Docker Image
-- Validate Build
-
-Future:
-
-- Automatic Docker Image Publishing
-- Kubernetes Deployment Automation
-- AI Validation Gate
-- Helm-based Deployment Support
-
----
-
-# 🏗️ Infrastructure
-
-Infrastructure provisioning is managed using Terraform.
-
-Current support:
-
-- AWS
-- Infrastructure as Code
-  (terraform/ – reusable Terraform modules and examples
-  terraform-aws/ – AWS deployment configuration)
-- Variables
-- Modular Configuration
-
----
-
-# 🚀 Getting Started
-
-Clone the repository
-
-```bash
+``` bash
 git clone https://github.com/sarthakrajput17/ops-pilot.git
-```
-
-Go into the project
-
-```bash
 cd ops-pilot
-```
 
-Create a virtual environment
-
-```bash
 python -m venv venv
-```
-
-Activate
-
-Linux / macOS
-
-```bash
 source venv/bin/activate
 ```
 
-Windows
+On Windows PowerShell, activate the environment with:
 
-```bash
-venv\Scripts\activate
+``` powershell
+.\venv\Scripts\Activate.ps1
 ```
 
-Install dependencies
+Install the AI service dependencies:
 
-```bash
+``` bash
 pip install -r ai-service/requirements.txt
 ```
 
-Configure environment
+Copy the example environment file and add the required Gemini
+configuration:
 
-```bash
+``` bash
 cp ai-service/.env.example ai-service/.env
 ```
 
-Edit `.env` and add your Google Gemini API key.
+Keep API keys out of source control. Start the service:
 
-Run FastAPI
-
-```bash
+``` bash
 cd ai-service
 uvicorn app.main:app --reload
 ```
 
-Open
+The service is available at `http://127.0.0.1:8000`. Interactive API
+documentation is at `http://127.0.0.1:8000/docs`.
 
+### Run the Flask tests
+
+From the repository root, start PostgreSQL:
+
+``` bash
+docker compose up -d postgres
 ```
-http://127.0.0.1:8000
+
+Install the Flask dependencies:
+
+``` bash
+pip install -r app/requirements.txt
 ```
 
----
+Run the tests from the `app` directory. For local execution, set the
+database host to `localhost`:
 
-# 🗺️ Roadmap
+``` bash
+cd app
+DB_HOST=localhost pytest -v
+```
 
-## ✅ Completed
+To run the Flask application directly, use the configuration in
+`app/src/config.py` and start it from the source directory:
 
-- FastAPI Backend
-- Universal Analysis Service
-- Automatic File Detection
-- Dockerfile Analysis
-- Terraform Analysis
-- Kubernetes Analysis
-- AI-powered PDF Reports
-- Production Readiness Scoring
-- Terraform Infrastructure
-- AWS Infrastructure
-- Docker
-- Docker Compose
-- GitHub Actions
-- Monitoring Stack
+``` bash
+cd src
+python main.py
+```
 
----
+The Flask app defaults to port `5000` locally. The Kubernetes
+configuration uses port `5001`.
 
-## 🚧 Upcoming
+To start the services defined in Docker Compose, run
+`docker compose up -d` from the repository root.
 
-- Docker Compose Analysis
-- Helm Chart Analysis
-- GitHub Actions Workflow Analysis
-- AI Deployment Execution
-- Kubernetes Auto Deployment
-- AI Infrastructure Generation
-- AI Log Analysis
-- Multi-cloud Support
-- Azure Support
-- GCP Support
+## Kubernetes commands
 
----
+Check the application Pods:
 
-# 👨‍💻 Author
+``` bash
+kubectl get pods -n ops-pilot
+```
+
+Check the Deployment rollout:
+
+``` bash
+kubectl rollout status deployment/ops-pilot -n ops-pilot
+```
+
+Show the image configured on the live Deployment:
+
+``` bash
+kubectl get deployment ops-pilot -n ops-pilot \
+  -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
+```
+
+Check Argo CD status:
+
+``` bash
+kubectl get application ops-pilot -n argocd \
+  -o jsonpath='{.status.sync.status}{" | "}{.status.health.status}{"\n"}'
+```
+
+To test the application through the Kubernetes Service, start a
+port-forward:
+
+``` bash
+kubectl port-forward -n ops-pilot \
+  service/ops-pilot-service 18080:5001
+```
+
+In another terminal:
+
+``` bash
+curl http://localhost:18080/version
+```
+
+Stop port-forwarding with `Ctrl+C`.
+
+The current Kubernetes setup is for development and demonstration. For
+example, PostgreSQL runs as a single instance and does not provide
+database high availability.
+
+## Infrastructure as Code
+
+Terraform configuration is kept in two directories:
+
+-   `terraform/` contains the project's Terraform configuration and
+    examples for container/local infrastructure.
+-   `terraform-aws/` contains AWS deployment configuration.
+
+The AWS resources created during development were destroyed; the
+configuration remains in the repository. Check the Terraform workspace,
+state, account, region, and expected costs before provisioning
+resources.
+
+## Screenshots
+
+Screenshots are stored in `docs/screenshots/`. The repository includes
+examples covering the Flask API, Docker and Compose, GitHub Actions,
+Terraform/AWS, Kubernetes, monitoring, the AI analysis dashboard, and
+PDF reports.
+
+### AI analysis
+
+**Home page**
+
+![Ops-Pilot AI home page](docs/screenshots/11-ai-analysis/home-page.png)
+
+**Kubernetes analysis**
+
+![Kubernetes
+analysis](docs/screenshots/11-ai-analysis/kubernetes-analysis-top.png)
+
+![Kubernetes
+findings](docs/screenshots/11-ai-analysis/kubernetes-analysis-bottom.png)
+
+**Docker analysis**
+
+![Docker
+analysis](docs/screenshots/11-ai-analysis/docker-analysis-top.png)
+
+![Docker
+findings](docs/screenshots/11-ai-analysis/docker-analysis-bottom.png)
+
+**PDF report**
+
+![PDF report page
+1](docs/screenshots/11-ai-analysis/pdf-report-page1.png)
+
+![PDF report page
+2](docs/screenshots/11-ai-analysis/pdf-report-page2.png)
+
+## Roadmap
+
+### Implemented
+
+-   Flask API and PostgreSQL integration.
+-   FastAPI AI service.
+-   Kubernetes, Dockerfile, and Terraform analysis.
+-   Rule-based checks and AI-generated recommendations.
+-   Readiness scoring and PDF reports.
+-   Docker and Docker Compose setup.
+-   Kubernetes deployment configuration.
+-   GitHub Actions testing and image publishing.
+-   Automated image manifest pull requests.
+-   Argo CD sync and auto-sync.
+-   Prometheus/Grafana monitoring and Loki/Promtail logging.
+-   Terraform configurations for local/container and AWS infrastructure.
+
+### Planned
+
+-   Docker Compose analysis.
+-   Helm chart analysis.
+-   GitHub Actions workflow analysis.
+-   AI-assisted log and incident analysis.
+-   Infrastructure generation.
+-   Deployment assistance with human approval.
+-   Azure and GCP support.
+
+## Author
 
 **Sarthak Rajput**
 
-DevOps • Cloud • Kubernetes • AI • Automation
+DevOps \| Cloud \| Kubernetes \| AI \| Automation
 
-GitHub: github.com/sarthakrajput17
-LinkedIn: linkedin.com/in/sarthak-rajput-0135971b5
+-   GitHub: [sarthakrajput17](https://github.com/sarthakrajput17)
+-   LinkedIn: [Sarthak
+    Rajput](https://www.linkedin.com/in/sarthak-rajput-0135971b5/)
 
-
----
-
-# ⭐ Support
-
-If you found this project useful, consider giving it a ⭐ on GitHub.
-
-It helps others discover the project and motivates future development.
+If you find the project useful, you can star the repository on GitHub.
