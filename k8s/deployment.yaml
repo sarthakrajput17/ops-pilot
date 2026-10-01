@@ -4,6 +4,8 @@ kind: Deployment
 metadata:
   name: ops-pilot
   namespace: ops-pilot
+  annotations:
+    ops-pilot.gitops-test: "auto-sync"
   labels:
     app: ops-pilot
     component: backend
