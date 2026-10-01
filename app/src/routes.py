@@ -33,6 +33,12 @@ def register_routes(app):
                 "message": str(e)
             }), 500
 
+    @app.route("/version", methods=["GET"])
+    def version():
+        return jsonify({
+            "application": "ops-pilot",
+            "version": "1.0.0"
+        }), 200
 
     @app.route("/users", methods=["POST"])
     def add_user():
