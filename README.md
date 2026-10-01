@@ -73,7 +73,7 @@ flowchart TD
     Analysis --> Gemini[Google Gemini]
     Analysis --> PDF[PDF report]
 
-    Pods --> Metrics[/metrics]
+    Pods --> Metrics["/metrics endpoint"]
     Metrics --> Prometheus[Prometheus]
     Prometheus --> Grafana[Grafana]
     Pods --> Logs[Container logs]
