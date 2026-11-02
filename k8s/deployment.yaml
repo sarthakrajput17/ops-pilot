@@ -6,6 +6,7 @@ metadata:
   namespace: ops-pilot
   annotations:
     ops-pilot.gitops-test: "auto-sync"
+    gitops-test: automatic-sync-verified
   labels:
     app: ops-pilot
     component: backend
