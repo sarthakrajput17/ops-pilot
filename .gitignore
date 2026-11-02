@@ -231,4 +231,5 @@ terraform.tfstate.*
 .DS_Store
 
 # GitHub Actions self-hosted runner
-actions-runner/
+actions-runner/k8s/secret.yaml
+k8s/secret.yaml

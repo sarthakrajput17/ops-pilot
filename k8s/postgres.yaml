@@ -1,10 +1,9 @@
+
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
   name: postgres
   namespace: ops-pilot
-
   labels:
     app: postgres
     component: database
@@ -26,7 +25,6 @@ spec:
     spec:
       containers:
         - name: postgres
-
           image: postgres:16.10
           imagePullPolicy: IfNotPresent
 
@@ -34,7 +32,6 @@ spec:
             requests:
               cpu: "100m"
               memory: "256Mi"
-
             limits:
               cpu: "500m"
               memory: "512Mi"
@@ -58,33 +55,48 @@ spec:
           ports:
             - containerPort: 5432
 
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+
+            - name: postgres-init
+              mountPath: /docker-entrypoint-initdb.d/init.sql
+              subPath: init.sql
+              readOnly: true
+
           livenessProbe:
             exec:
               command:
-                - pg_isready
-                - -U
-                - postgres
-
+                - sh
+                - -c
+                - 'pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
             initialDelaySeconds: 30
             periodSeconds: 10
 
           readinessProbe:
             exec:
               command:
-                - pg_isready
-                - -U
-                - postgres
-
+                - sh
+                - -c
+                - 'pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
             initialDelaySeconds: 10
             periodSeconds: 5
+
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+
+        - name: postgres-init
+          configMap:
+            name: postgres-init
+
 ---
 apiVersion: v1
 kind: Service
-
 metadata:
   name: postgres
   namespace: ops-pilot
-
   labels:
     app: postgres
     component: database

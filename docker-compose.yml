@@ -36,6 +36,18 @@ services:
     ports:
       - "5001:5001"
 
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: ops-pilot-ai
+    restart: unless-stopped
+    env_file:
+      - ./ai-service/.env
+    ports:
+      - "8000:8000"
+
+
   loki:
     image: grafana/loki:2.9.8
 
